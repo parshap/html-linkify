@@ -11,6 +11,13 @@ characters).
 
 # Example
 
+```js
+var linkify = require("html-linkify");
+linkify("Visit me at http://foo.com!<script>");
+// -> String with anchor element to `http://foo.com` and properly
+//    escaped "<script>" text
+```
+
 # API
 
 ## `linkify(text, [options])`

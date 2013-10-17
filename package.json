@@ -1,0 +1,32 @@
+{
+  "name": "html-linkify",
+  "version": "0.0.0",
+  "description": "Turn plain text links to HTML anchor elements",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:parshap/html-linkify.git"
+  },
+  "keywords": [
+    "html",
+    "link",
+    "url",
+    "uri",
+    "anchor",
+    "linkify"
+  ],
+  "author": "Parsha Pourkhomami",
+  "license": "Public Domain",
+  "bugs": {
+    "url": "https://github.com/parshap/html-linkify/issues"
+  },
+  "dependencies": {
+    "html-escape": "1.0.0"
+  },
+  "devDependencies": {
+    "tape": "~2.0.0"
+  }
+}

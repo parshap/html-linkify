@@ -69,5 +69,19 @@ test("linkify", function(t) {
 	t.equal(linkify("foo http://bar.com www.foo.com http://baz.com"),
 		'foo <a href="http://bar.com">http://bar.com</a> <a href="http://www.foo.com">www.foo.com</a> <a href="http://baz.com">http://baz.com</a>');
 
+	// XSS at end of url
+	t.equal(linkify("foo https://bar.com<script>"),
+		'foo <a href="https://bar.com">https://bar.com</a>&lt;script&gt;');
+
+	// Punctuation at end of URL
+	[".", "!", ",", ";"].forEach(function(s) {
+		t.equal(linkify("foo https://bar.com" + s),
+			'foo <a href="https://bar.com">https://bar.com</a>' + s);
+	});
+
+	// XSS and punctuation
+	t.equal(linkify("Visit me at http://foo.com!<script>"),
+		'Visit me at <a href="http://foo.com">http://foo.com</a>!&lt;script&gt;');
+
 	t.end();
 });

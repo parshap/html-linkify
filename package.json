@@ -1,6 +1,6 @@
 {
   "name": "html-linkify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Turn plain text links into HTML anchor elements",
   "main": "index.js",
   "scripts": {

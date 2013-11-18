@@ -45,7 +45,8 @@ function anchor(url, attrs) {
 
 function emailReplace(text, attrs) {
 	var emailRegex = /(([a-zA-Z0-9\-\_\.])+(\+[a-zA-Z0-9]*)?@[a-zA-Z\_\-]+?(\.[a-zA-Z]{2,6})+)/gim
-		, emailTemplate = '<a '+attributes(attrs)+' href="mailto:$1">$1</a>';
+		, attrsString = attributes(attrs)
+		, emailTemplate = '<a' + (attrsString ? ' ' + attrsString : '') + ' href="mailto:$1">$1</a>';
 
   return text.replace(emailRegex, emailTemplate);
 }

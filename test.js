@@ -83,5 +83,14 @@ test("linkify", function(t) {
 	t.equal(linkify("Visit me at http://foo.com!<script>"),
 		'Visit me at <a href="http://foo.com">http://foo.com</a>!&lt;script&gt;');
 
+	// email to mailto
+	t.equal(linkify('me@test.com'), '<a href="mailto:me@test.com">me@test.com</a>');
+
+	t.equal(linkify('first.last@test.co.uk'), '<a href="mailto:first.last@test.co.uk">first.last@test.co.uk</a>');
+
+	t.equal(linkify('john.doe23@url-withdash.com'), '<a href="mailto:john.doe23@url-withdash.com">john.doe23@url-withdash.com</a>');
+
+	t.equal(linkify('gmail.style+withplus@gmail.com'), '<a href="mailto:gmail.style+withplus@gmail.com">gmail.style+withplus@gmail.com</a>');
+
 	t.end();
 });

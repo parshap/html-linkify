@@ -21,6 +21,8 @@ module.exports = function(text, options) {
 
 	retval += escape(text.slice(cur));
 
+	retval = emailReplace(retval);
+
 	return retval;
 };
 
@@ -36,9 +38,16 @@ function anchor(url, attrs) {
 
 	var attrsString = [attributes({ href: href }), attributes(attrs)]
 		.filter(Boolean)
-		.join(" ");
+		.join(" ");;
 
 	return "<a "+ attrsString + ">" + text + "</a>";
+}
+
+function emailReplace(text, attrs) {
+	var emailRegex = /(([a-zA-Z0-9\-\_\.])+(\+[a-zA-Z0-9]*)?@[a-zA-Z\_\-]+?(\.[a-zA-Z]{2,6})+)/gim
+		, emailTemplate = '<a '+attributes(attrs)+' href="mailto:$1">$1</a>';
+
+  return text.replace(emailRegex, emailTemplate);
 }
 
 function attributes(attrs) {

@@ -38,7 +38,7 @@ function anchor(url, attrs) {
 
 	var attrsString = [attributes({ href: href }), attributes(attrs)]
 		.filter(Boolean)
-		.join(" ");;
+		.join(" ");
 
 	return "<a "+ attrsString + ">" + text + "</a>";
 }

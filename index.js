@@ -1,10 +1,13 @@
 // Takes plain text and replaces links with HTML anchor elements. Based on
-// https://github.com/thejh/node-linkify and
-// http://daringfireball.net/2010/07/improved_regex_for_matching_urls
-
+// https://github.com/thejh/node-linkify
 "use strict";
 
-var r = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
+// Link regex
+// See http://daringfireball.net/2010/07/improved_regex_for_matching_urls
+var rLink = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
+
+// Email regex
+var rEmail = /(([a-zA-Z0-9\-\_\.])+(\+[a-zA-Z0-9]*)?@[a-zA-Z\_\-]+?(\.[a-zA-Z]{2,6})+)/gim;
 
 var escape = require("html-escape");
 
@@ -13,15 +16,14 @@ module.exports = function(text, options) {
 
 	var retval = "", cur = 0, match;
 
-	while (match = r.exec(text)) {
+	while (match = rLink.exec(text)) {
 		retval += escape(text.slice(cur, match.index));
 		retval += anchor(match[0], options.attributes);
-		cur = r.lastIndex;
+		cur = rLink.lastIndex;
 	}
 
 	retval += escape(text.slice(cur));
-
-	retval = emailReplace(retval);
+	retval = emails(retval);
 
 	return retval;
 };
@@ -43,12 +45,12 @@ function anchor(url, attrs) {
 	return "<a "+ attrsString + ">" + text + "</a>";
 }
 
-function emailReplace(text, attrs) {
-	var emailRegex = /(([a-zA-Z0-9\-\_\.])+(\+[a-zA-Z0-9]*)?@[a-zA-Z\_\-]+?(\.[a-zA-Z]{2,6})+)/gim
-		, attrsString = attributes(attrs)
-		, emailTemplate = '<a' + (attrsString ? ' ' + attrsString : '') + ' href="mailto:$1">$1</a>';
+// Replace emails in text with anchor elements
+function emails(text, attrs) {
+	var attrsString = attributes(attrs),
+		emailTemplate = '<a ' + attrsString + ' href="mailto:$1">$1</a>';
 
-  return text.replace(emailRegex, emailTemplate);
+	return text.replace(rEmail, emailTemplate);
 }
 
 function attributes(attrs) {

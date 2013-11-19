@@ -7,7 +7,7 @@
 var rLink = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
 
 // Email regex
-var rEmail = /(([a-zA-Z0-9\-\_\.])+(\+[a-zA-Z0-9]*)?@[a-zA-Z\_\-]+?(\.[a-zA-Z]{2,6})+)/gim;
+var rEmail = /\b(([a-zA-Z0-9\-\_\.])+(\+[a-zA-Z0-9]*)?@[a-zA-Z\_\-]+?(\.[a-zA-Z]{2,6})+)/gim;
 
 var escape = require("html-escape");
 
@@ -38,11 +38,17 @@ function anchor(url, attrs) {
 		href = 'http://' + href;
 	}
 
-	var attrsString = [attributes({ href: href }), attributes(attrs)]
+	var attrsString = combine({ href: href }, attrs);
+
+	return "<a " + attrsString + ">" + text + "</a>";
+}
+
+// combine attrs objects into single string
+function combine() {
+	return Array.prototype.slice.call(arguments)
+		.map(attributes)
 		.filter(Boolean)
 		.join(" ");
-
-	return "<a "+ attrsString + ">" + text + "</a>";
 }
 
 // Replace emails in text with anchor elements

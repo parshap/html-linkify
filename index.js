@@ -53,10 +53,16 @@ function combine() {
 
 // Replace emails in text with anchor elements
 function emails(text, attrs) {
-	var attrsString = attributes(attrs),
-		emailTemplate = '<a ' + attrsString + ' href="mailto:$1">$1</a>';
+	var attrsString = attributes(attrs);
 
-	return text.replace(rEmail, emailTemplate);
+	return text.replace(rEmail, function(match, email) {
+		var elAttrs = attributes({ href: "mailto:" + email });
+		if (attrsString) {
+			elAttrs += " " + attrsString;
+		}
+
+		return "<a " + elAttrs + ">" + escape(email) + "</a>";
+	});
 }
 
 function attributes(attrs) {

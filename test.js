@@ -37,6 +37,10 @@ test("linkify", function(t) {
 	t.equal(linkify("https://bar.com foo"),
 		"<a href=\"https://bar.com\">https://bar.com</a> foo");
 
+	// Link with port
+	t.equal(linkify("foo https://bar.com:8080 bar"),
+		"foo <a href=\"https://bar.com:8080\">https://bar.com:8080</a> bar");
+
 	// Attribute
 	t.equal(linkify("foo https://bar.com", ATTRS_SINGLE),
 		"foo <a href=\"https://bar.com\" class=\"test\">https://bar.com</a>");

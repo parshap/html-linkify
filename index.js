@@ -16,13 +16,15 @@ module.exports = function(text, options) {
 
 	var retval = "", cur = 0, match;
 
+	var escapeFn = options.escape === false ? function(str) { return str; } : escape;
+
 	while (match = rLink.exec(text)) {
-		retval += escape(text.slice(cur, match.index));
+		retval += escapeFn(text.slice(cur, match.index));
 		retval += anchor(match[0], options.attributes);
 		cur = rLink.lastIndex;
 	}
 
-	retval += escape(text.slice(cur));
+	retval += escapeFn(text.slice(cur));
 	retval = emails(retval);
 
 	return retval;

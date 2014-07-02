@@ -1,3 +1,4 @@
+var util = require('util');
 var test = require("tape");
 var linkify = require("./");
 
@@ -18,6 +19,10 @@ var ATTRS_RESERVED = {
 
 var ATTRS_XSS = {
 	attributes: { class: "<script>" },
+};
+
+var ATTRS_DISABLE_ESCAPING = {
+	escape: false
 };
 
 test("linkify", function(t) {
@@ -99,6 +104,22 @@ test("linkify", function(t) {
 	t.equal(linkify('first.<script>last@gmail.com'), 'first.&lt;script&gt;<a href="mailto:last@gmail.com">last@gmail.com</a>');
 	t.equal(linkify('first.last@<script>gmail.co.uk'), 'first.last@&lt;script&gt;gmail.co.uk');
 	t.equal(linkify('first.last@gmail<script>.co.uk'), 'first.last@gmail&lt;script&gt;.co.uk');
+
+	t.equal(linkify("<p>http://example.com</p>", ATTRS_DISABLE_ESCAPING),
+			'<p><a href="http://example.com">http://example.com</a></p>');
+
+	// Disable escpaing
+	t.equal(linkify("<h1>Test</h1><p>http://example.com</p>", ATTRS_DISABLE_ESCAPING),
+			'<h1>Test</h1><p><a href="http://example.com">http://example.com</a></p>');
+	t.equal(linkify("<h1>Test</h1><p>info@example.com</p>", ATTRS_DISABLE_ESCAPING),
+			'<h1>Test</h1><p><a href="mailto:info@example.com">info@example.com</a></p>');
+	t.equal(linkify("<h1>Test</h1><p>http://example.net http://example.com</p>", ATTRS_DISABLE_ESCAPING),
+			'<h1>Test</h1><p><a href="http://example.net">http://example.net</a> ' +
+			'<a href="http://example.com">http://example.com</a></p>');
+	t.equal(linkify("<span>foo</span> https://e<script>e.com", ATTRS_DISABLE_ESCAPING),
+			'<span>foo</span> https://e<script>e.com');
+	t.equal(linkify("<p>http://bar.com</p>", util._extend(ATTRS_XSS, ATTRS_DISABLE_ESCAPING)),
+			'<p><a href="http://bar.com" class="&lt;script&gt;">http://bar.com</a></p>');
 
 	t.end();
 });

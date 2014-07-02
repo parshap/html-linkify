@@ -26,11 +26,11 @@ Options:
 
  * `options.attributes`: A mapping of attributes to be added to the
    generated anchor elements (in addition to *href*).
+ * `options.escape`: Whether surrounding HTML tags should be escaped or not (default: `true`).
 
 # Todo
 
  * Allow arbitrary user-definable replacing
- * Optional escaping
 
 # Installation 
 

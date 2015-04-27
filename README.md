@@ -8,12 +8,13 @@ elements and return properly escaped and safe HTML.
 ```js
 var linkify = require("html-linkify");
 var text = linkify(
-	"Visit http://foo.com! " +
-	"And email me@me.com " +
+	"Visit http://foo.com!\n" +
+	"Email me@me.com\n" +
 	"<script>alert('xss!')</script>");
 console.log(text);
-// -> String with anchor element to `http://foo.com`, email mailto link to
-//    `me@me.com`, and properly escaped "<script>" text
+// -> Visit <a href="http://foo.com">http://foo.com</a>!
+//    Email <a href="mailto:me@me.com">me@me.com</a>
+//    &lt;script&gt;alert(&#39;xss!&#39;)&lt;/script&gt;
 ```
 
 # API
@@ -32,7 +33,7 @@ Options:
 
  * Allow arbitrary user-definable replacing
 
-# Installation 
+# Installation
 
 ```
 npm install html-linkify

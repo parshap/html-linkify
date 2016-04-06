@@ -25,7 +25,7 @@ module.exports = function(text, options) {
 	}
 
 	retval += escapeFn(text.slice(cur));
-	retval = emails(retval);
+	retval = emails(retval, options.attributes);
 
 	return retval;
 };

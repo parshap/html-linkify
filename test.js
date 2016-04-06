@@ -105,6 +105,10 @@ test("linkify", function(t) {
 	t.equal(linkify('first.last@<script>gmail.co.uk'), 'first.last@&lt;script&gt;gmail.co.uk');
 	t.equal(linkify('first.last@gmail<script>.co.uk'), 'first.last@gmail&lt;script&gt;.co.uk');
 
+	// Email with attributes
+	t.equal(linkify("me@test.com", ATTRS_SINGLE), '<a href="mailto:me@test.com" class="test">me@test.com</a>');
+	t.equal(linkify("me@test.com", ATTRS_MULTI), '<a href="mailto:me@test.com" id="foo" class="test">me@test.com</a>');
+
 	t.equal(linkify("<p>http://example.com</p>", ATTRS_DISABLE_ESCAPING),
 			'<p><a href="http://example.com">http://example.com</a></p>');
 
